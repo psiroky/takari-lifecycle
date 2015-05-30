@@ -73,6 +73,8 @@ public abstract class AbstractCompilerJavac extends AbstractCompiler {
       case none:
         options.add("-proc:none");
         break;
+      default:
+        throw new IllegalArgumentException("Unsupported -proc=" + getProc());
     }
     if (getProc() != Proc.none) {
       options.add("-s");
@@ -224,4 +226,15 @@ public abstract class AbstractCompilerJavac extends AbstractCompiler {
   protected abstract int compile(Map<File, Resource<File>> sources) throws MojoExecutionException, IOException;
 
   protected abstract String getCompilerId();
+
+  @Override
+  public void setProc(Proc proc) {
+    if (proc == Proc.procEX) {
+      super.setProc(Proc.proc);
+    } else if (proc == Proc.onlyEX) {
+      super.setProc(Proc.only);
+    } else {
+      super.setProc(proc);
+    }
+  }
 }
